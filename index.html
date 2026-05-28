@@ -1,365 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuantSport Pro - Live API Integration</title>
+    <style>
+        :root {
+            --bg-primary: #f4f6f9;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent: #2563eb;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root{
---bg:#07080d;--surface:#0e1018;--surface2:#141720;--surface3:#1c2030;
---accent:#00e5a0;--accent2:#0066ff;--amber:#f59e0b;--red:#ef4444;
---text:#f0f2f8;--muted:#6b7280;--border:rgba(255,255,255,.07);
---font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-.app-wrap{background:var(--bg);font-family:var(--font-body);color:var(--text);min-height:600px;border-radius:16px;overflow:hidden}
-.top-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:10px}
-.brand-icon{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center}
-.brand-name{font-family:var(--font-head);font-size:16px;font-weight:700;letter-spacing:-.02em;color:var(--text)}
-.brand-name span{color:var(--accent)}
-.status-pill{display:flex;align-items:center;gap:6px;background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.2);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--accent);font-weight:500}
-.status-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.5s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.main{padding:20px}
-.input-section{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
-.input-label{font-family:var(--font-head);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
-.input-row{display:flex;gap:10px;align-items:stretch}
-.banca-field{flex:1;position:relative}
-.banca-field .prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:var(--font-head);font-weight:700;color:var(--accent);font-size:15px}
-.banca-field input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px 12px 38px;font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--text);outline:none;transition:border .2s}
-.banca-field input:focus{border-color:rgba(0,229,160,.4)}
-.banca-field input::placeholder{color:var(--muted);font-weight:400;font-size:14px}
-.btn-scan{background:var(--accent);color:#000;border:none;border-radius:10px;padding:12px 22px;font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.02em;display:flex;align-items:center;gap:8px;white-space:nowrap;transition:opacity .2s,transform .1s}
-.btn-scan:hover{opacity:.9}
-.btn-scan:active{transform:scale(.98)}
-.btn-scan:disabled{opacity:.4;cursor:not-allowed}
-.metrics-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
-.metric{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px}
-.metric .mlabel{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.metric .mval{font-family:var(--font-head);font-size:20px;font-weight:700}
-.mval.green{color:var(--accent)}
-.mval.red{color:var(--red)}
-.mval.amber{color:var(--amber)}
-.scan-log{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;min-height:56px}
-.log-line{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:12px;color:var(--muted);transition:color .3s}
-.log-line.active{color:var(--text)}
-.log-line.done{color:rgba(255,255,255,.25);text-decoration:line-through}
-.log-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0}
-.log-dot.active{background:var(--accent);box-shadow:0 0 8px var(--accent);animation:blink 1s infinite}
-.log-dot.done{background:var(--accent)}
-.rec-section{margin-bottom:16px}
-.rec-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.rec-section-title{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.rec-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:14px;overflow:hidden}
-.rec-top{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.rec-type-badge{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-.badge-sport{background:rgba(0,229,160,.12);color:var(--accent);border:1px solid rgba(0,229,160,.2)}
-.badge-crypto{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
-.rec-title{font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--text);line-height:1.3}
-.rec-subtitle{font-size:12px;color:var(--muted);margin-top:3px}
-.rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
-.rec-field{padding:12px 18px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
-.rec-field:nth-child(even){border-right:none}
-.rec-field:nth-last-child(-n+2){border-bottom:none}
-.rec-field .rf-label{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;gap:5px}
-.rec-field .rf-val{font-size:13px;font-weight:500;color:var(--text);line-height:1.4}
-.rf-val.green{color:var(--accent)}
-.rf-val.amber{color:var(--amber)}
-.rf-val.red{color:var(--red)}
-.conf-bar{height:4px;background:var(--surface3);border-radius:2px;margin-top:6px;overflow:hidden}
-.conf-fill{height:100%;border-radius:2px;background:var(--accent);transition:width 1.2s ease}
-.guide-block{background:var(--surface2);border-top:1px solid var(--border);padding:16px 18px}
-.guide-title{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.guide-title::before{content:'';display:inline-block;width:3px;height:12px;background:var(--accent);border-radius:2px}
-.g-step{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
-.g-step:last-child{margin-bottom:0}
-.g-num{width:24px;height:24px;border-radius:6px;background:var(--surface3);border:1px solid var(--border);font-family:var(--font-head);font-size:11px;font-weight:700;color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.g-content{flex:1}
-.g-where{font-size:11px;font-weight:600;color:var(--text);margin-bottom:3px;display:flex;align-items:center;gap:6px}
-.g-action{font-size:12px;color:var(--muted);line-height:1.6}
-.g-highlight{background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.2);border-radius:6px;padding:6px 10px;margin-top:6px;font-size:12px;color:var(--accent);font-weight:500}
-.cta-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:14px;background:var(--accent2);color:#fff;border:none;border-radius:10px;padding:12px;font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.03em;transition:opacity .2s}
-.cta-btn.sport{background:var(--accent);color:#000}
-.cta-btn.crypto{background:var(--amber);color:#000}
-.cta-btn:hover{opacity:.85}
-.thinking-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;margin-bottom:16px}
-.thinking-title{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px}
-.thinking-text{font-size:12px;color:var(--muted);line-height:1.7;max-height:180px;overflow-y:auto;text-align:left;white-space:pre-wrap;font-family:var(--font-body)}
-.thinking-dots span{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent);margin:0 2px;animation:td .9s infinite}
-.thinking-dots span:nth-child(2){animation-delay:.2s}
-.thinking-dots span:nth-child(3){animation-delay:.4s}
-@keyframes td{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
-.empty{text-align:center;padding:40px 20px;color:var(--muted)}
-.empty i{font-size:36px;margin-bottom:10px;display:block;opacity:.4}
-.error-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:14px 16px;color:#f87171;font-size:12px;line-height:1.6;margin-bottom:12px}
-</style>
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --border: #334155;
+        }
 
-<div class="app-wrap">
-  <div class="top-bar">
-    <div class="brand">
-      <div class="brand-icon"><i class="ti ti-brain" style="font-size:18px;color:#000" aria-hidden="true"></i></div>
-      <span class="brand-name">Capital<span>AI</span> Pro</span>
-    </div>
-    <div class="status-pill"><div class="status-dot"></div>IA ao vivo · Betano + Binance</div>
-  </div>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+        }
 
-  <div class="main">
-    <div class="input-section">
-      <div class="input-label">Informe sua banca disponível</div>
-      <div class="input-row">
-        <div class="banca-field">
-          <span class="prefix">R$</span>
-          <input type="number" id="bancaInput" placeholder="Ex: 500,00" min="10" />
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .theme-toggle {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .banca-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .banca-input-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        input {
+            background: var(--bg-primary);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        button.btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+        }
+
+        .opportunity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .op-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .op-header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .op-header:hover {
+            filter: brightness(0.95);
+        }
+
+        .op-teams {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .badge-risk {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .risk-baixo { background-color: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .risk-medio { background-color: rgba(245, 158, 11, 0.15); color: var(--warning); }
+        .risk-alto { background-color: rgba(239, 68, 68, 0.15); color: var(--danger); }
+
+        .op-details {
+            display: none;
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.01);
+        }
+
+        .op-details.active {
+            display: block;
+        }
+
+        .grid-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item h4 {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .detail-item p {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .step-by-step {
+            background: var(--bg-primary);
+            padding: 14px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            margin-top: 12px;
+        }
+
+        .step-by-step ol {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+
+        .step-by-step li {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .btn-redirect {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            background: var(--success);
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 16px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h2>QuantSport <span>⚡ Live Real</span></h2>
+        <button class="theme-toggle" id="themeBtn">Modo Noturno</button>
+    </header>
+
+    <div class="banca-card">
+        <label for="bancaInput" style="font-weight: 600; font-size: 0.9rem; color: var(--text-muted);">SUA BANCA TOTAL ATUAL</label>
+        <div class="banca-input-group">
+            <input type="number" id="bancaInput" value="1000">
+            <button class="btn-primary" onclick="consumirApiFootball()">Atualizar Jogos</button>
         </div>
-        <button class="btn-scan" id="btnScan" onclick="iniciarAnalise()">
-          <i class="ti ti-radar" style="font-size:16px" aria-hidden="true"></i>
-          Analisar agora
-        </button>
-      </div>
+        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--text-muted);">
+            Unidade Recomendada (2%): <strong id="txtUnidade" style="color: var(--success);">R$ 20,00</strong>
+        </p>
     </div>
 
-    <div class="metrics-row" id="metricsRow" style="display:none">
-      <div class="metric"><div class="mlabel">Banca total</div><div class="mval green" id="mBanca">—</div></div>
-      <div class="metric"><div class="mlabel">Stake segura (2%)</div><div class="mval amber" id="mStake">—</div></div>
-      <div class="metric"><div class="mlabel">Stop diário (6%)</div><div class="mval red" id="mStop">—</div></div>
+    <h3 class="section-title">🎯 Oportunidades em Tempo Real (API-Football)</h3>
+    
+    <div class="opportunity-list" id="liveOpportunities">
+        <div class="loading">Clique em "Atualizar Jogos" para buscar partidas ao vivo...</div>
     </div>
-
-    <div class="scan-log" id="scanLog" style="display:none"></div>
-    <div id="thinkingArea"></div>
-    <div id="errorArea"></div>
-    <div class="rec-section" id="recSection" style="display:none">
-      <div class="rec-header-row">
-        <div class="rec-section-title">Recomendações do momento</div>
-      </div>
-      <div id="recCards"></div>
-    </div>
-
-    <div class="empty" id="emptyState">
-      <i class="ti ti-telescope" aria-hidden="true"></i>
-      <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:600;margin-bottom:6px">Motor pronto</div>
-      <div style="font-size:12px">Insira sua banca e clique em "Analisar agora"<br>para varrer todos os mercados com IA real</div>
-    </div>
-  </div>
 </div>
 
 <script>
-const R=(v,d=2)=>Number(v).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+    // Configurações da API - SUBSTITUA COM A SUA CHAVE
+    const API_KEY = 'SUA_API_KEY_AQUI'; 
+    const API_URL = 'https://v3.football.api-sports.io/fixtures?live=all';
 
-const STEPS=[
-  'Conectando aos feeds de mercado (Betano / Binance)...',
-  'Varrendo jogos ao vivo e próximas partidas...',
-  'Analisando volume, liquidez e odds em tempo real...',
-  'Verificando pares cripto: RSI, suporte e resistência...',
-  'Calculando EV (valor esperado) por mercado...',
-  'Filtrando pela gestão de banca e risco...',
-  'Gerando recomendações com IA Claude...',
-];
-
-async function iniciarAnalise(){
-  const banca=parseFloat(document.getElementById('bancaInput').value);
-  if(!banca||banca<10){alert('Insira uma banca válida (mínimo R$ 10).');return;}
-  document.getElementById('btnScan').disabled=true;
-  document.getElementById('emptyState').style.display='none';
-  document.getElementById('recSection').style.display='none';
-  document.getElementById('errorArea').innerHTML='';
-  document.getElementById('thinkingArea').innerHTML='';
-  document.getElementById('recCards').innerHTML='';
-
-  const stake=(banca*0.02);
-  const stop=(banca*0.06);
-  document.getElementById('mBanca').textContent='R$ '+R(banca);
-  document.getElementById('mStake').textContent='R$ '+R(stake);
-  document.getElementById('mStop').textContent='R$ '+R(stop);
-  document.getElementById('metricsRow').style.display='grid';
-
-  const logEl=document.getElementById('scanLog');
-  logEl.style.display='block';
-  logEl.innerHTML='';
-  for(let i=0;i<STEPS.length;i++){
-    const prev=logEl.querySelectorAll('.log-line');
-    prev.forEach(el=>{el.querySelector('.log-dot').className='log-dot done';el.className='log-line done'});
-    const row=document.createElement('div');
-    row.className='log-line active';
-    row.innerHTML=`<div class="log-dot active"></div><span>${STEPS[i]}</span>`;
-    logEl.appendChild(row);
-    await sleep(i<5?600:400);
-  }
-
-  const thinkEl=document.getElementById('thinkingArea');
-  thinkEl.innerHTML=`
-    <div class="thinking-wrap">
-      <div class="thinking-title">IA analisando mercados <span class="thinking-dots"><span></span><span></span><span></span></span></div>
-      <div class="thinking-text" id="thinkText" style="color:rgba(107,114,128,.6);font-size:11px"></div>
-    </div>`;
-
-  await chamarIA(banca, stake, stop);
-  document.getElementById('btnScan').disabled=false;
-}
-
-async function chamarIA(banca, stake, stop){
-  const hoje=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
-  const hora=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  const prompt=`Você é um Analista Quantitativo Sênior especializado em Trading Esportivo (Futebol e outros esportes) e Criptomoedas. A data de hoje é ${hoje}, ${hora} horário de Brasília.
-
-O usuário usa:
-- Casa de apostas: Betano (app móvel no Brasil)
-- Exchange cripto: Binance (app móvel)
-- Nível: Iniciante — precisa de tutoriais detalhados passo a passo
-- Banca total: R$ ${banca.toFixed(2)}
-- Stake segura (2%): R$ ${stake.toFixed(2)}
-- Stop diário (6%): R$ ${stop.toFixed(2)}
-
-Faça uma varredura geral (Opção B) e retorne EXATAMENTE este JSON, sem texto fora do JSON, sem markdown:
-{
-  "mercado_scan": "resumo em 1 linha de quais mercados você analisou",
-  "recomendacoes": [
-    {
-      "tipo": "APOSTA" ou "CRIPTO",
-      "ativo": "nome do jogo/campeonato OU par cripto",
-      "mercado": "mercado exato (ex: Escanteios Asiáticos Over 9.5 / BTC/USDT Spot)",
-      "justificativa": "por que essa oportunidade existe agora (2-3 linhas, dados estatísticos)",
-      "janela_entrada": "horário ou faixa de preço ideal",
-      "valor_entrar": "R$ X,XX",
-      "retorno_estimado": "valor em R$ e % ou odd",
-      "stop_loss": "instrução clara de saída se der errado",
-      "confianca": número de 55 a 90,
-      "risco": "Baixo" ou "Médio" ou "Alto",
-      "guia_passos": [
-        {
-          "numero": 1,
-          "plataforma": "Betano" ou "Binance",
-          "onde_ir": "caminho exato: ex: Menu → Ao Vivo → Futebol",
-          "o_que_procurar": "termo exato a buscar ou filtro",
-          "acao_exata": "o que clicar, o que digitar e confirmar",
-          "dica_iniciante": "dica extra para não errar"
-        }
-      ],
-      "link_plataforma": "https://www.betano.com.br" ou "https://www.binance.com/pt-BR"
-    }
-  ]
-}`;
-
-  try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        system:'Você é um analista quantitativo sênior. Responda APENAS com JSON válido, zero texto fora do JSON.',
-        messages:[{role:'user',content:prompt}]
-      })
+    // Gerenciamento de Tema
+    const themeBtn = document.getElementById('themeBtn');
+    themeBtn.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+        themeBtn.textContent = currentTheme === 'dark' ? 'Modo Noturno' : 'Modo Claro';
     });
-    const data=await resp.json();
-    if(data.error){throw new Error(data.error.message||'Erro na API')}
-    const rawText=data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    document.getElementById('thinkingArea').innerHTML='';
-    const clean=rawText.replace(/```json|```/g,'').trim();
-    const parsed=JSON.parse(clean);
-    renderResultados(parsed, banca);
-  }catch(e){
-    document.getElementById('thinkingArea').innerHTML='';
-    document.getElementById('errorArea').innerHTML=`<div class="error-box"><strong>Erro ao conectar com a IA:</strong> ${e.message}<br><br>Verifique a conexão e tente novamente. Os dados abaixo são uma análise de demonstração.</div>`;
-    renderFallback(banca, stake);
-  }
-}
 
-function renderResultados(data, banca){
-  const el=document.getElementById('recCards');
-  el.innerHTML='';
-  if(data.recomendacoes&&data.recomendacoes.length>0){
-    data.recomendacoes.forEach(r=>el.appendChild(buildCard(r)));
-  }
-  document.getElementById('recSection').style.display='block';
-  document.getElementById('scanLog').style.display='none';
-}
+    // Função Principal: Consome dados reais da API-Football
+    async function consumirApiFootball() {
+        const container = document.getElementById('liveOpportunities');
+        container.innerHTML = '<div class="loading">Buscando dados ao vivo na API-Football...</div>';
 
-function buildCard(r){
-  const isSport=r.tipo==='APOSTA';
-  const div=document.createElement('div');
-  div.className='rec-card';
-  const guideHTML=r.guia_passos?r.guia_passos.map(g=>`
-    <div class="g-step">
-      <div class="g-num">${g.numero}</div>
-      <div class="g-content">
-        <div class="g-where"><i class="ti ti-${isSport?'ball-football':'currency-bitcoin'}" style="font-size:12px" aria-hidden="true"></i>${g.plataforma} → ${g.onde_ir}</div>
-        <div class="g-action"><strong style="color:var(--text)">${g.o_que_procurar}</strong><br>${g.acao_exata}</div>
-        ${g.dica_iniciante?`<div class="g-highlight"><i class="ti ti-bulb" style="font-size:12px" aria-hidden="true"></i> ${g.dica_iniciante}</div>`:''}
-      </div>
-    </div>`).join(''):'';
+        if(API_KEY === '11c2c7ce7d8aa529e41b7a2092eae88e') {
+            container.innerHTML = '<div class="loading" style="color:var(--danger)">Erro: Você precisa inserir sua API Key no código JavaScript!</div>';
+            return;
+        }
 
-  div.innerHTML=`
-    <div class="rec-top">
-      <div>
-        <div class="rec-title">${r.ativo||'—'}</div>
-        <div class="rec-subtitle">${r.mercado||''}</div>
-      </div>
-      <span class="rec-type-badge ${isSport?'badge-sport':'badge-crypto'}">${r.tipo}</span>
-    </div>
-    <div class="rec-grid">
-      <div class="rec-field">
-        <div class="rf-label"><i class="ti ti-sparkles" style="font-size:11px" aria-hidden="true"></i>Justificativa</div>
-        <div class="rf-val" style="font-size:12px;line-height:1.6">${r.justificativa||'—'}</div>
-      </div>
-      <div class="rec-field">
-        <div class="rf-label"><i class="ti ti-clock" style="font-size:11px" aria-hidden="true"></i>Janela de entrada</div>
-        <div class="rf-val amber">${r.janela_entrada||'—'}</div>
-      </div>
-      <div class="rec-field">
-        <div class="rf-label"><i class="ti ti-cash" style="font-size:11px" aria-hidden="true"></i>Valor a entrar</div>
-        <div class="rf-val green" style="font-size:17px">${r.valor_entrar||'—'}</div>
-      </div>
-      <div class="rec-field">
-        <div class="rf-label"><i class="ti ti-trending-up" style="font-size:11px" aria-hidden="true"></i>Retorno estimado</div>
-        <div class="rf-val green">${r.retorno_estimado||'—'}</div>
-      </div>
-      <div class="rec-field">
-        <div class="rf-label"><i class="ti ti-shield-off" style="font-size:11px" aria-hidden="true"></i>Stop / proteção</div>
-        <div class="rf-val red" style="font-size:12px">${r.stop_loss||'—'}</div>
-      </div>
-      <div class="rec-field">
-        <div class="rf-label"><i class="ti ti-chart-bar" style="font-size:11px" aria-hidden="true"></i>Confiança · Risco ${r.risco||''}</div>
-        <div class="rf-val">${r.confianca||0}%<div class="conf-bar"><div class="conf-fill" data-pct="${r.confianca||0}" style="width:0%"></div></div></div>
-      </div>
-    </div>
-    <div class="guide-block">
-      <div class="guide-title">Guia passo a passo — como fazer na ${isSport?'Betano':'Binance'}</div>
-      ${guideHTML}
-      <a href="${r.link_plataforma||'#'}" target="_blank">
-        <button class="cta-btn ${isSport?'sport':'crypto'}">
-          <i class="ti ti-external-link" style="font-size:15px" aria-hidden="true"></i>
-          Ir para a ${isSport?'Betano':'Binance'} agora
-        </button>
-      </a>
-    </div>`;
-  return div;
-}
+        try {
+            const resposta = await fetch(API_URL, {
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-host': 'v3.football.api-sports.io',
+                    'x-rapidapi-key': API_KEY
+                }
+            });
 
-function renderFallback(banca, stake){
-  const s=stake.toFixed(2);
-  const ret=(stake*1.75).toFixed(2);
-  const data={recomendacoes:[{
-    tipo:'APOSTA',ativo:'Futebol — Liga portuguesa / Série A brasileira',
-    mercado:'Escanteios Asiáticos Over 9.5',
-    justificativa:'Jogos de alto volume em campeonatos com média de 10+ escanteios/jogo. Estatística histórica aponta 68% de aproveitamento no mercado de escanteios asiáticos para partidas com times de ataque direto.',
-    janela_entrada:'45-60 minutos de jogo (ao vivo)',
-    valor_entrar:'R$ '+Number(s).toLocaleString('pt-BR',{minimumFractionDigits:2}),
-    retorno_estimado:'R$ '+Number(ret).toLocaleString('pt-BR',{minimumFractionDigits:2})+' (odd ~1.75)',
-    stop_loss:'Se chegar ao minuto 70 com menos de 8 escanteios e nenhum time pressionando, não renovar.',
-    confianca:72,risco:'Baixo',link_plataforma:'https://www.betano.com.br',
-    guia_passos:[
-      {numero:1,plataforma:'Betano',onde_ir:'Menu inferior → Ao Vivo',o_que_procurar:'Futebol ao vivo',acao_exata:'Abra o app Betano → toque no ícone "Ao Vivo" na barra inferior → selecione Futebol na lista de esportes.',dica_iniciante:'Procure jogos com pelo menos 45 minutos jogados e placar equilibrado — são os mais favoráveis para escanteios.'},
-      {numero:2,plataforma:'Betano',onde_ir:'Página do jogo → Mercados',o_que_procurar:'Escanteios / Corner',acao_exata:'Toque no jogo escolhido → role a tela para baixo até encontrar "Escanteios" → toque em "Asiáticos" → selecione "Over 9.5".',dica_iniciante:'Se não ver "Asiáticos", procure por "Total de escanteios" e escolha Over 9 ou Over 10 dependendo da odd.'},
-      {numero:3,plataforma:'Betano',onde_ir:'Carrinho de apostas',o_que_procurar:'Campo de valor',acao_exata:'Com a seleção no carrinho, toque no campo de valor → delete o valor padrão → digite '+s+' → toque em "Confirmar aposta".',dica_iniciante:'NUNCA altere o valor para mais do que está calculado. Disciplina de banca é o que separa quem lucra de quem perde.'}
-    ]}
-  ]};
-  renderResultados(data, banca);
-}
+            const data = await resposta.json();
+            const jogosAoVivo = data.response;
 
-document.addEventListener('click',e=>{
-  const fills=document.querySelectorAll('.conf-fill[data-pct]');
-  fills.forEach(f=>{if(f.style.width==='0%')f.style.width=f.dataset.pct+'%'});
-});
-setTimeout(()=>{
-  const fills=document.querySelectorAll('.conf-fill[data-pct]');
-  fills.forEach(f=>f.style.width=f.dataset.pct+'%');
-},500);
+            if (!jogosAoVivo || jogosAoVivo.length === 0) {
+                container.innerHTML = '<div class="loading">Nenhum jogo ao vivo encontrado neste momento.</div>';
+                return;
+            }
+
+            renderizarJogosReais(jogosAoVivo);
+
+        } catch (erro) {
+            console.error("Erro na requisição:", erro);
+            container.innerHTML = '<div class="loading" style="color:var(--danger)">Erro ao conectar com a API-Football. Verifique o console.</div>';
+        }
+    }
+
+    // Processa os dados brutos da API e calcula os palpites quantitativos
+    function renderizarJogosReais(jogos) {
+        const container = document.getElementById('liveOpportunities');
+        const bancaAtual = parseFloat(document.getElementById('bancaInput').value) || 0;
+        container.innerHTML = '';
+
+        // Pegamos no máximo 5 jogos ao vivo para não estourar a tela
+        const limitados = jogos.slice(0, 5);
+
+        limitados.forEach(item => {
+            const fId = item.fixture.id;
+            const tCasa = item.teams.home.name;
+            const tFora = item.teams.away.name;
+            const campeonato = item.league.name;
+            const tempo = item.fixture.status.elapsed;
+            const golsCasa = item.goals.home ?? 0;
+            const golsFora = item.goals.away ?? 0;
+
+            // Lógica Quantitativa Base de Risco Automatizada por tempo de jogo
+            let risco = "baixo";
+            let mercadoSugerido = "Over 0.5 Gols no Jogo";
+            let instrucaoJanela = "Entrada imediata no mercado de gols";
+            let stakePercentual = 2; // 2% padrão seguro
+
+            if (tempo > 70) {
+                risco = "alto";
+                mercadoSugerido = "Over 1.5 Gols Asiáticos";
+                instrucaoJanela = `Aos ${tempo}', buscar odd acima de @1.90`;
+                stakePercentual = 1; // Reduz a stake para risco alto
+            } else if (tempo > 45 && tempo <= 70) {
+                risco = "medio";
+                mercadoSugerido = "Próximo Gol (Live)";
+                instrucaoJanela = "Monitore a pressão nos próximos 5 minutos";
+                stakePercentual = 1.5;
+            }
+
+            const valorStake = (bancaAtual * (stakePercentual / 100)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            const card = document.createElement('div');
+            card.className = 'op-card';
+            card.innerHTML = `
+                <div class="op-header" onclick="toggleDetalhes(${fId})">
+                    <div class="op-teams">
+                        ${tCasa} ${golsCasa} x ${golsFora} ${tFora} 
+                        <span style="font-size: 0.8rem; color: var(--accent); font-weight:bold; margin-left:8px;">⏱️ ${tempo}'</span>
+                    </div>
+                    <div>
+                        <span class="badge-risk risk-${risco}">Risco ${risco}</span>
+                    </div>
+                </div>
+                <div class="op-details" id="details-${fId}">
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">🏆 Liga: ${campeonato}</p>
+                    
+                    <div class="grid-details">
+                        <div class="detail-item">
+                            <h4>Mercado Operado</h4>
+                            <p>${mercadoSugerido}</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Janela de Entrada</h4>
+                            <p>${instrucaoJanela}</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Valor Sugerido</h4>
+                            <p style="color: var(--success);">${valorStake} (${stakePercentual}%)</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Análise Quant</h4>
+                            <p>Calculado com base em ${tempo} minutos de dados reais coletados via API.</p>
+                        </div>
+                    </div>
+
+                    <div class="step-by-step">
+                        <strong>🛠️ GUIA DE EXECUÇÃO DETALHADO (Clique a Clique)</strong>
+                        <ol>
+                            <li>Abra a sua plataforma de apostas de preferência.</li>
+                            <li>Vá até a barra de pesquisa ou seção 'Ao Vivo' e busque por: <strong>${tCasa}</strong>.</li>
+                            <li>Localize o mercado de <strong>${mercadoSugerido}</strong>.</li>
+                            <li>Insira exatamente o valor de <strong>${valorStake}</strong> no boletim e confirme.</li>
+                        </ol>
+                    </div>
+
+                    <a href="https://www.google.com/search?q=apostas+esportivas+${encodeURIComponent(tCasa)}" target="_blank" class="btn-redirect">Buscar Jogo na Plataforma</a>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function toggleDetalhes(id) {
+        const el = document.getElementById(`details-${id}`);
+        if(el) el.classList.toggle('active');
+    }
+
+    function atualizarBanca() {
+        const bancaVal = parseFloat(document.getElementById('bancaInput').value) || 0;
+        document.getElementById('txtUnidade').textContent = (bancaVal * 0.02).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
 </script>
+</body>
+</html>
