@@ -255,38 +255,49 @@
 
     // Função Principal: Consome dados reais da API-Football
     async function consumirApiFootball() {
-        const container = document.getElementById('liveOpportunities');
-        container.innerHTML = '<div class="loading">Buscando dados ao vivo na API-Football...</div>';
+    const container = document.getElementById('liveOpportunities');
+    container.innerHTML = '<div class="loading">Buscando dados ao vivo na API-Football...</div>';
 
-        if(API_KEY === '11c2c7ce7d8aa529e41b7a2092eae88e') {
-            container.innerHTML = '<div class="loading" style="color:var(--danger)">Erro: Você precisa inserir sua API Key no código JavaScript!</div>';
+    if(API_KEY === 'COLE_AQUI_SUA_CHAVE_DA_RAPIDAPI' || API_KEY === '') {
+        container.innerHTML = '<div class="loading" style="color:var(--danger)">Erro: Você precisa inserir sua API Key no código JavaScript!</div>';
+        return;
+    }
+
+    // Usando um Proxy público para burlar o bloqueio 'Failed to Fetch' do navegador local
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const targetUrl = 'https://api-football-v1.p.rapidapi.com/v3/fixtures?live=all';
+
+    try {
+        const resposta = await fetch(proxyUrl + targetUrl, {
+            method: 'GET',
+            headers: {
+                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
+                'x-rapidapi-key': API_KEY,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        const data = await resposta.json();
+        const jogosAoVivo = data.response;
+
+        if (!jogosAoVivo || jogosAoVivo.length === 0) {
+            container.innerHTML = '<div class="loading">Nenhum jogo ao vivo encontrado no mundo neste exato momento.</div>';
             return;
         }
 
-        try {
-            const resposta = await fetch(API_URL, {
-                method: 'GET',
-                headers: {
-                    'x-rapidapi-host': 'v3.football.api-sports.io',
-                    'x-rapidapi-key': API_KEY
-                }
-            });
+        renderizarJogosReais(jogosAoVivo);
 
-            const data = await resposta.json();
-            const jogosAoVivo = data.response;
-
-            if (!jogosAoVivo || jogosAoVivo.length === 0) {
-                container.innerHTML = '<div class="loading">Nenhum jogo ao vivo encontrado neste momento.</div>';
-                return;
-            }
-
-            renderizarJogosReais(jogosAoVivo);
-
-        } catch (erro) {
-            console.error("Erro na requisição:", erro);
-            container.innerHTML = '<div class="loading" style="color:var(--danger)">Erro ao conectar com a API-Football. Verifique o console.</div>';
-        }
+    } catch (erro) {
+        console.error("Erro detalhado na requisição:", erro);
+        container.innerHTML = `
+            <div class="loading" style="color:var(--danger)">
+                Erro de Conexão Local.<br>
+                <span style="font-size:0.8rem; color:var(--text-muted)">
+                    Se você estiver usando AdBlock, desative-o para testar o App.
+                </span>
+            </div>`;
     }
+}
 
     // Processa os dados brutos da API e calcula os palpites quantitativos
     function renderizarJogosReais(jogos) {
