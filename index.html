@@ -241,9 +241,6 @@
 </div>
 
 <script>
-    // Configurações da API - SUBSTITUA COM A SUA CHAVE
-    const API_KEY = 'SUA_API_KEY_AQUI'; 
-    const API_URL = 'https://v3.football.api-sports.io/fixtures?live=all';
 
     // Gerenciamento de Tema
     const themeBtn = document.getElementById('themeBtn');
@@ -252,30 +249,33 @@
         document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
         themeBtn.textContent = currentTheme === 'dark' ? 'Modo Noturno' : 'Modo Claro';
     });
-
+// 1. Configuração limpa e direta para rodar na nuvem (GitHub Pages)
+const API_KEY = '11c2c7ce7d8aa529e41b7a2092eae88e'; // Cole aqui a sua chave real da RapidAPI
+const API_URL = 'https://api-football-v1.p.rapidapi.com/v3/fixtures?live=all';
     // Função Principal: Consome dados reais da API-Football
     async function consumirApiFootball() {
     const container = document.getElementById('liveOpportunities');
     container.innerHTML = '<div class="loading">Buscando dados ao vivo na API-Football...</div>';
 
-    if(API_KEY === 'COLE_AQUI_SUA_CHAVE_DA_RAPIDAPI' || API_KEY === '') {
+    // Validação de segurança para você não esquecer de colar a chave
+    if(API_KEY === '11c2c7ce7d8aa529e41b7a2092eae88e' || API_KEY === '') {
         container.innerHTML = '<div class="loading" style="color:var(--danger)">Erro: Você precisa inserir sua API Key no código JavaScript!</div>';
         return;
     }
 
-    // Usando um Proxy público para burlar o bloqueio 'Failed to Fetch' do navegador local
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    const targetUrl = 'https://api-football-v1.p.rapidapi.com/v3/fixtures?live=all';
-
     try {
-        const resposta = await fetch(proxyUrl + targetUrl, {
+        // 2. Requisição direta e segura pelo protocolo HTTPS do GitHub
+        const resposta = await fetch(API_URL, {
             method: 'GET',
             headers: {
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
-                'x-rapidapi-key': API_KEY,
-                'X-Requested-With': 'XMLHttpRequest'
+                'x-rapidapi-key': API_KEY
             }
         });
+
+        if (!resposta.ok) {
+            throw new Error(`Erro no servidor da API: Status ${resposta.status}`);
+        }
 
         const data = await resposta.json();
         const jogosAoVivo = data.response;
@@ -285,15 +285,16 @@
             return;
         }
 
+        // Se houver jogos, renderiza na tela dentro dos blocos minimizados
         renderizarJogosReais(jogosAoVivo);
 
     } catch (erro) {
         console.error("Erro detalhado na requisição:", erro);
         container.innerHTML = `
             <div class="loading" style="color:var(--danger)">
-                Erro de Conexão Local.<br>
+                Erro na API-Football.<br>
                 <span style="font-size:0.8rem; color:var(--text-muted)">
-                    Se você estiver usando AdBlock, desative-o para testar o App.
+                    ${erro.message}. Verifique se sua chave está correta no código.
                 </span>
             </div>`;
     }
