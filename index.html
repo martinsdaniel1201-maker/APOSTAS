@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuantSport Pro — Inteligência Preditiva</title>
+    <title>QuantSport Pro v5 — Inteligência Preditiva</title>
+
     <style>
         :root {
             --bg-dark: #090d16;
@@ -24,14 +25,12 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            padding: 0;
-            margin: 0;
             min-height: 100vh;
             transition: 0.3s ease;
         }
@@ -45,17 +44,15 @@
             --text-muted: #6b7280;
         }
 
-        /* Topbar Luxuosa */
         header {
             background: linear-gradient(135deg, #111827 0%, #030712 100%);
-            padding: 20px 40px;
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-            flex-wrap: wrap;
             gap: 15px;
+            flex-wrap: wrap;
         }
 
         body.light-mode header {
@@ -63,9 +60,8 @@
         }
 
         header h1 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 800;
-            letter-spacing: -0.5px;
             background: linear-gradient(to right, #3b82f6, #06b6d4, #8b5cf6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -79,13 +75,12 @@
 
         header span {
             font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
             color: var(--text-muted);
             border: 1px solid var(--border-color);
-            padding: 4px 8px;
-            border-radius: 4px;
-            margin-left: 10px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-top: 5px;
+            display: inline-block;
         }
 
         .header-buttons {
@@ -97,22 +92,21 @@
         .btn-refresh,
         .btn-darkmode {
             border: none;
-            padding: 10px 24px;
-            border-radius: 8px;
-            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            font-weight: bold;
+            transition: 0.3s ease;
         }
 
         .btn-refresh {
             background: linear-gradient(to right, var(--accent-blue), var(--accent-cyan));
             color: white;
-            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
         }
 
         .btn-refresh:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4);
         }
 
         .btn-darkmode {
@@ -135,21 +129,20 @@
             background: #d1d5db;
         }
 
-        /* Layout Grid Principal (Desktop Core) */
         .dashboard-container {
-            max-width: 1400px;
-            margin: 30px auto;
+            max-width: 1500px;
+            margin: 25px auto;
             padding: 0 20px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 20px;
         }
 
         .column {
-            background: rgba(17, 24, 39, 0.6);
+            background: rgba(17, 24, 39, 0.7);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 24px;
+            padding: 20px;
             backdrop-filter: blur(10px);
         }
 
@@ -158,14 +151,11 @@
         }
 
         .column-title {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 700;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
             border-left: 4px solid var(--accent-cyan);
-            padding-left: 10px;
+            padding-left: 12px;
         }
 
         .column-title.future {
@@ -178,19 +168,17 @@
             gap: 16px;
         }
 
-        /* Cards Elegantes de Oportunidades */
         .op-card {
-            background-color: var(--bg-card);
+            background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.3s ease;
         }
 
         .op-card:hover {
-            border-color: #4b5563;
             transform: scale(1.01);
-            background-color: var(--bg-card-hover);
+            background: var(--bg-card-hover);
         }
 
         .op-header {
@@ -199,678 +187,658 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .op-teams {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
-            color: var(--text-main);
         }
 
-        .op-teams strong {
-            color: #ffffff;
+        .live-timer,
+        .future-timer {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 8px;
         }
 
         .live-timer {
             background: rgba(239, 68, 68, 0.15);
             color: var(--danger);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-left: 8px;
         }
 
         .future-timer {
             background: rgba(139, 92, 246, 0.15);
             color: var(--ai-purple);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-left: 8px;
         }
 
-        /* Badges de Confiança/Análise */
+        /* BADGE BRASIL */
+        .brazil-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            margin-left: 8px;
+            border: 1px solid #15803d;
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+        }
+
         .badge-confidence {
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 0.7rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
-        .conf-alto { background: rgba(16, 185, 129, 0.2); color: var(--success); border: 1px solid var(--success); }
-        .conf-medio { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); }
 
-        /* Gaveta Expandida de Insights Inteligentes */
+        .conf-alto {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
         .op-details {
             display: none;
             padding: 20px;
             border-top: 1px solid var(--border-color);
-            background: linear-gradient(to bottom, rgba(17, 24, 39, 0.8), rgba(3, 7, 18, 0.9));
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        body.light-mode .op-details {
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(243, 244, 246, 0.9));
         }
 
         .op-details.active {
             display: block;
-            max-height: 2000px;
         }
 
-        /* Bloco Gemini Inteligência Artificial */
-        .gemini-analysis-box {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 10px;
-            padding: 16px;
+        .league-box {
+            background: rgba(139,92,246,0.1);
+            border: 1px solid rgba(139,92,246,0.3);
+            padding: 14px;
+            border-radius: 12px;
             margin-bottom: 18px;
-            position: relative;
+            line-height: 1.8;
         }
 
-        body.light-mode .gemini-analysis-box {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.04) 0%, rgba(59, 130, 246, 0.04) 100%);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-        }
-
-        .gemini-analysis-box::before {
-            content: "✨ INSIGHT GEMINI PRO";
-            position: absolute;
-            top: -10px;
-            left: 15px;
-            background: linear-gradient(to right, var(--ai-purple), var(--accent-blue));
-            font-size: 0.65rem;
-            font-weight: 800;
-            padding: 2px 10px;
-            border-radius: 10px;
-            letter-spacing: 1px;
-        }
-
-        .gemini-text {
-            font-size: 0.9rem;
-            line-height: 1.5;
-            color: #e5e7eb;
-            font-style: italic;
-            margin-top: 8px;
-        }
-
-        body.light-mode .gemini-text {
-            color: #374151;
-        }
-
-        .grid-data {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .data-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        body.light-mode .data-card {
-            background: rgba(59, 130, 246, 0.05);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-
-        .data-card h5 {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-
-        .data-card p {
-            font-size: 0.95rem;
-            font-weight: bold;
-            color: var(--accent-cyan);
+        body.light-mode .league-box {
+            background: rgba(139,92,246,0.05);
+            border: 1px solid rgba(139,92,246,0.2);
         }
 
         .league-info {
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            line-height: 1.6;
+            background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(59,130,246,0.15));
+            border: 1px solid rgba(16,185,129,0.3);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            line-height: 1.8;
         }
 
         body.light-mode .league-info {
-            background: rgba(139, 92, 246, 0.05);
-            border: 1px solid rgba(139, 92, 246, 0.2);
+            background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(59,130,246,0.08));
+        }
+
+        .league-info strong {
+            display: block;
+            color: var(--accent-cyan);
+            margin-bottom: 4px;
         }
 
         .bet-highlight {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15));
+            background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(59,130,246,0.15));
             border: 2px solid var(--success);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
+            padding: 18px;
+            border-radius: 14px;
+            margin-bottom: 18px;
         }
 
         .bet-highlight h3 {
             color: var(--success);
-            margin-bottom: 10px;
-            font-size: 1rem;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
         }
 
         .recommendation-main {
-            font-size: 1.15rem;
+            font-size: 1.3rem;
             font-weight: 900;
+            line-height: 1.6;
             color: var(--success);
-            padding: 10px;
+            padding: 12px;
             background: rgba(16, 185, 129, 0.1);
-            border-radius: 8px;
+            border-radius: 10px;
+        }
+
+        .gemini-analysis-box {
+            background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(59,130,246,0.08));
+            border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        body.light-mode .gemini-analysis-box {
+            background: linear-gradient(135deg, rgba(139,92,246,0.04), rgba(59,130,246,0.04));
         }
 
         .market-list {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2,1fr);
             gap: 12px;
-            margin: 15px 0;
+            margin-top: 15px;
         }
 
         .market-item {
-            padding: 12px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 10px;
             border: 1px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.03);
-            font-size: 0.85rem;
-            transition: 0.2s ease;
-        }
-
-        .market-item:hover {
-            transform: translateY(-2px);
+            background: rgba(255,255,255,0.03);
         }
 
         .market-risk-low {
-            border-left: 4px solid var(--success);
-            background: rgba(16, 185, 129, 0.08);
+            border-left: 5px solid var(--success);
         }
 
         .market-risk-medium {
-            border-left: 4px solid var(--warning);
-            background: rgba(245, 158, 11, 0.08);
+            border-left: 5px solid var(--warning);
         }
 
         .market-risk-high {
-            border-left: 4px solid var(--danger);
-            background: rgba(239, 68, 68, 0.08);
+            border-left: 5px solid var(--danger);
         }
 
         .market-item strong {
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
 
-        .risk-badge {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-
-        .risk-low {
-            background: rgba(16, 185, 129, 0.3);
-            color: var(--success);
-        }
-
-        .risk-medium {
-            background: rgba(245, 158, 11, 0.3);
-            color: var(--warning);
-        }
-
-        .risk-high {
-            background: rgba(239, 68, 68, 0.3);
-            color: var(--danger);
+        .market-item small {
+            display: block;
+            font-size: 0.8rem;
         }
 
         .news-flash {
-            background: rgba(245, 158, 11, 0.08);
-            border-left: 3px solid var(--warning);
-            padding: 10px;
-            border-radius: 0 8px 8px 0;
-            font-size: 0.8rem;
-            color: #f3f4f6;
-            margin-top: 10px;
+            background: rgba(245,158,11,0.1);
+            border-left: 4px solid var(--warning);
+            padding: 12px;
+            border-radius: 0 10px 10px 0;
+            margin-top: 18px;
         }
 
-        body.light-mode .news-flash {
-            color: #374151;
+        .platforms-info {
+            background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(6,182,212,0.15));
+            border: 1px solid rgba(59,130,246,0.3);
+            padding: 14px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        body.light-mode .platforms-info {
+            background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(6,182,212,0.08));
         }
 
         .whatsapp-btn {
             width: 100%;
+            margin-top: 20px;
             background: #25D366;
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 15px;
             transition: 0.3s ease;
         }
 
         .whatsapp-btn:hover {
             background: #1eab4b;
             transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
         }
 
         .loading {
             text-align: center;
-            padding: 30px;
+            padding: 40px;
             color: var(--text-muted);
-            font-size: 0.9rem;
         }
 
-        .brazil-badge {
-            display: inline-block;
-            background: rgba(34, 197, 94, 0.2);
-            color: var(--success);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-left: 8px;
-        }
-
-        /* 📱 RESPONSIVIDADE (Celulares e Tablets) */
         @media (max-width: 968px) {
-            header {
-                padding: 15px 20px;
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
             .dashboard-container {
                 grid-template-columns: 1fr;
-                margin: 15px auto;
-                gap: 20px;
             }
-            .grid-data {
-                grid-template-columns: 1fr;
-            }
+
             .market-list {
                 grid-template-columns: 1fr;
+            }
+
+            .op-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div>
-            <h1>QuantSport Intelligence</h1>
-            <span>Análise Avançada v1.0</span>
-        </div>
-        <div class="header-buttons">
-            <button class="btn-darkmode" onclick="toggleDarkMode()">
-                🌙 Modo Noturno
-            </button>
-            <button class="btn-refresh" onclick="inicializarVarredura()">Executar Varredura Geral</button>
-        </div>
-    </header>
+<header>
+    <div>
+        <h1>QuantSport Intelligence</h1>
+        <span>Análise Avançada v5</span>
+    </div>
 
-    <div class="dashboard-container">
-        <!-- COLUNA 1: REAL-TIME LIVE -->
-        <div class="column">
-            <div class="column-title">⚡ Oportunidades Em Tempo Real (Live)</div>
-            <div class="opportunity-list" id="liveContainer">
-                <div class="loading">Inicie a varredura para capturar logs em tempo real...</div>
-            </div>
+    <div class="header-buttons">
+        <button class="btn-darkmode" onclick="toggleDarkMode()">
+            🌙 Modo Noturno
+        </button>
+
+        <button class="btn-refresh" onclick="inicializarVarredura()">
+            Executar Varredura Geral
+        </button>
+    </div>
+</header>
+
+<div class="dashboard-container">
+
+    <div class="column">
+        <div class="column-title">
+            ⚡ Jogos Ao Vivo
         </div>
 
-        <!-- COLUNA 2: FUTURE PREDICTIONS -->
-        <div class="column">
-            <div class="column-title future">🔮 Análise de Próximos Confrontos (3 dias)</div>
-            <div class="opportunity-list" id="futureContainer">
-                <div class="loading">Aguardando gatilho de varredura futura...</div>
+        <div class="opportunity-list" id="liveContainer">
+            <div class="loading">
+                Executando análise ao vivo...
             </div>
         </div>
     </div>
 
+    <div class="column">
+        <div class="column-title future">
+            🔮 Jogos Futuros (3 dias)
+        </div>
+
+        <div class="opportunity-list" id="futureContainer">
+            <div class="loading">
+                Buscando confrontos futuros...
+            </div>
+        </div>
+    </div>
+
+</div>
+
 <script>
-    const API_KEY = '4ff831b724ea4a0efdbb66bb52e0f6ea';
-    const ENDPOINT_LIVE = 'https://v3.football.api-sports.io/fixtures?live=all';
-    
-    // Calcular data para os próximos 3 dias
-    const hoje = new Date();
-    const daqui3Dias = new Date();
-    daqui3Dias.setDate(hoje.getDate() + 3);
-    
-    const formatarData = (d) => d.toISOString().split('T')[0];
-    const ENDPOINT_FUTURE = `https://v3.football.api-sports.io/fixtures?from=${formatarData(hoje)}&to=${formatarData(daqui3Dias)}`;
 
-    // Definir modo noturno salvo
-    function initDarkMode() {
-        const isDarkMode = localStorage.getItem('darkMode') !== 'false';
-        if (!isDarkMode) {
-            document.body.classList.add('light-mode');
-        }
+const API_KEY = 'SUA_API_KEY';
+
+const hoje = new Date();
+const daqui3Dias = new Date();
+daqui3Dias.setDate(hoje.getDate() + 3);
+
+const formatarData = (d) => d.toISOString().split('T')[0];
+
+const ENDPOINT_LIVE = 'https://v3.football.api-sports.io/fixtures?live=all';
+
+const ENDPOINT_FUTURE =
+`https://v3.football.api-sports.io/fixtures?from=${formatarData(hoje)}&to=${formatarData(daqui3Dias)}`;
+
+// Inicializar modo noturno
+function initDarkMode() {
+    const isDarkMode = localStorage.getItem('darkMode') !== 'false';
+    if (!isDarkMode) {
+        document.body.classList.add('light-mode');
     }
+}
 
-    function toggleDarkMode() {
-        const isDarkMode = !document.body.classList.contains('light-mode');
-        document.body.classList.toggle('light-mode');
-        localStorage.setItem('darkMode', isDarkMode);
-    }
+function toggleDarkMode() {
+    const isDarkMode = !document.body.classList.contains('light-mode');
+    document.body.classList.toggle('light-mode');
+    localStorage.setItem('darkMode', isDarkMode);
+}
 
-    function inicializarVarredura() {
-        carregarLive();
-        carregarFuturos();
-    }
+function inicializarVarredura() {
+    carregarLive();
+    carregarFuturos();
+}
 
-    // 1. CARREGAR JOGOS EM TEMPO REAL
-    async function carregarLive() {
-        const container = document.getElementById('liveContainer');
-        container.innerHTML = '<div class="loading">Processando fluxos ao vivo da API-Sports...</div>';
+async function carregarLive() {
 
-        try {
-            const res = await fetch(ENDPOINT_LIVE, {
-                method: 'GET',
-                headers: { 'x-apisports-key': API_KEY, 'Content-Type': 'application/json' }
-            });
-            const data = await res.json();
-            const jogos = data.response || [];
+    const container = document.getElementById('liveContainer');
 
-            if(jogos.length === 0) {
-                container.innerHTML = '<div class="loading">Nenhuma anomalia ou jogo ao vivo detectado agora.</div>';
-                return;
+    container.innerHTML = '<div class="loading">Analisando jogos ao vivo...</div>';
+
+    try {
+
+        const res = await fetch(ENDPOINT_LIVE, {
+            headers: {
+                'x-apisports-key': API_KEY
             }
-
-            container.innerHTML = '';
-            jogos.slice(0, 8).forEach(jogo => {
-                container.appendChild(criarCardOportunidade(jogo, true));
-            });
-        } catch (e) {
-            container.innerHTML = '<div class="loading" style="color:var(--danger)">Erro no link direto de dados em tempo real.</div>';
-        }
-    }
-
-    // 2. CARREGAR JOGOS FUTUROS
-    async function carregarFuturos() {
-        const container = document.getElementById('futureContainer');
-        container.innerHTML = '<div class="loading">Mapeando agendas, notícias e tabelas históricas...</div>';
-
-        try {
-            const res = await fetch(ENDPOINT_FUTURE, {
-                method: 'GET',
-                headers: { 'x-apisports-key': API_KEY, 'Content-Type': 'application/json' }
-            });
-            const data = await res.json();
-            let jogos = data.response || [];
-
-            // Priorizar campeonatos brasileiros
-            jogos.sort((a, b) => {
-                const paisA = (a.league.country || '').toLowerCase();
-                const paisB = (b.league.country || '').toLowerCase();
-                const ligaA = paisA.includes('brazil') ? -1 : 1;
-                const ligaB = paisB.includes('brazil') ? -1 : 1;
-                return ligaA - ligaB;
-            });
-
-            if(jogos.length === 0) {
-                container.innerHTML = '<div class="loading">Sem agendas futuras encontradas.</div>';
-                return;
-            }
-
-            container.innerHTML = '';
-            jogos.slice(0, 8).forEach(jogo => {
-                container.appendChild(criarCardOportunidade(jogo, false));
-            });
-        } catch (e) {
-            container.innerHTML = '<div class="loading" style="color:var(--danger)">Erro no link de mapeamento futuro.</div>';
-        }
-    }
-
-    // LISTA COMPLETA DE TIPOS DE APOSTAS
-    const TIPOS_APOSTAS = {
-        baixoRisco: [
-            { nome: 'Dupla Chance Casa', desc: 'Casa vence ou empata' },
-            { nome: 'Over 1.5 Gols', desc: 'Mais de 1 gol' },
-            { nome: 'Dupla Chance Fora', desc: 'Fora vence ou empata' }
-        ],
-        medioRisco: [
-            { nome: 'Over 2.5 Gols', desc: 'Mais de 2 gols' },
-            { nome: 'Ambos Marcam', desc: 'Casa E Fora marcam' },
-            { nome: 'Casa Marca Primeiro', desc: 'Primeira meta de casa' }
-        ],
-        altoRisco: [
-            { nome: 'Vitória Seca Casa', desc: 'Casa vence sem empate' },
-            { nome: 'Placar Exato', desc: 'Resultado exato' },
-            { nome: 'Over 3.5 Gols', desc: 'Mais de 3 gols' }
-        ]
-    };
-
-    // 3. ENGENHARIA DE DESIGN DOS CARDS + ENGINE SIMULADA DO GEMINI
-    function criarCardOportunidade(item, isLive) {
-        const fId = item.fixture.id;
-        const tCasa = item.teams.home.name;
-        const tFora = item.teams.away.name;
-        const liga = item.league.name;
-        const pais = item.league.country || 'N/A';
-        const serie = item.league.round || 'N/A';
-        
-        const golsCasa = item.goals.home ?? 0;
-        const golsFora = item.goals.away ?? 0;
-        const tempo = item.fixture.status.elapsed ?? 0;
-
-        const dataJogo = new Date(item.fixture.date).toLocaleString('pt-BR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
         });
 
-        const isBrazil = pais.toLowerCase().includes('brazil');
-        const badge = isBrazil ? '<span class="brazil-badge">🇧🇷 BRASIL</span>' : '';
+        const data = await res.json();
 
-        // Engine de cruzamento de dados para gerar as opiniões do Gemini
-        let recomendacaoMercado = "";
-        let apostaPrincipal = "";
-        let confiancaAI = "Média";
-        let badgeClass = "conf-medio";
-        let geminiOpinion = "";
-        let flashNoticia = "";
-        let mercados = [];
+        const jogos = data.response || [];
 
-        if (isLive) {
-            if (tempo > 75 && (golsCasa + golsFora) >= 2) {
-                apostaPrincipal = "Empate ou Próximo Gol";
-                recomendacaoMercado = "Back ao Empate ou Próximo gol (Asiático)";
-                confiancaAI = "Alta";
-                badgeClass = "conf-alto";
-                geminiOpinion = `Cruzando o volume crítico de ataques nos últimos 10 minutos com o desgaste defensivo do ${tFora}. O modelo projeta 78% de probabilidade de um evento cinético na área nos instantes finais.`;
-                flashNoticia = `🔥 Radar Live: Técnico do ${tCasa} empurrou a linha de meias totalmente para a zona de ataque.`;
-                mercados = [
-                    { nome: 'Empate', risco: 'MÉDIO' },
-                    { nome: 'Próximo Gol', risco: 'MÉDIO' },
-                    { nome: 'Over 3.5 Gols', risco: 'ALTO' }
-                ];
-            } else {
-                apostaPrincipal = "Over 1.5 Gols";
-                recomendacaoMercado = "Over 0.5 Gols no Primeiro Tempo / Linha de Cantos";
-                geminiOpinion = `Padrão de pressão tática alta detectado nas laterais. O ${tCasa} mantém transição ofensiva de velocidade, ideal para explorar mercados de escanteios ou gols rápidos.`;
-                flashNoticia = `📢 Informação de campo: Intensidade de chuva local acelerando a movimentação da bola.`;
-                mercados = [
-                    { nome: 'Over 1.5 Gols', risco: 'BAIXO' },
-                    { nome: 'Ambos Marcam', risco: 'MÉDIO' },
-                    { nome: 'Over 2.5 Gols', risco: 'MÉDIO' }
-                ];
-            }
-        } else {
-            // Regra Preditiva para os futuros
-            if (isBrazil) {
-                apostaPrincipal = "Dupla Chance Casa + Over 1.5 Gols";
-                recomendacaoMercado = "Match Odds - Vitória Seca ou Dupla Chance";
-                confiancaAI = "Alta";
-                badgeClass = "conf-alto";
-                geminiOpinion = `Análise preditiva neural para o Brasileirão: ${liga}. O histórico recente aponta superioridade analítica de posse estruturada do ${tCasa}. Sugerimos consolidação na vitória do mandante com proteção em Over 1.5 gols.`;
-                flashNoticia = `📊 Trend BRASIL: Mercado brasileiro favorecendo apostas conservadoras. Alta previsibilidade detectada.`;
-                mercados = [
-                    { nome: 'Dupla Chance Casa', risco: 'BAIXO' },
-                    { nome: 'Over 1.5 Gols', risco: 'BAIXO' },
-                    { nome: 'Casa Marca Primeiro', risco: 'MÉDIO' },
-                    { nome: 'Ambos Marcam', risco: 'MÉDIO' },
-                    { nome: 'Vitória Seca Casa', risco: 'ALTO' }
-                ];
-            } else {
-                apostaPrincipal = "Over 2.5 Gols";
-                recomendacaoMercado = "Match Odds - Over ou Ambos Marcam";
-                confiancaAI = "Alta";
-                badgeClass = "conf-alto";
-                geminiOpinion = `Análise preditiva internacional: ${liga}. Tendência ofensiva elevada detectada. Padrão histórico favorável para Over em competições europeias.`;
-                flashNoticia = `🌍 Trend INTERNACIONAL: Mercado indicando tendência de gols. Ataque forte detectado.`;
-                mercados = [
-                    { nome: 'Over 1.5 Gols', risco: 'BAIXO' },
-                    { nome: 'Over 2.5 Gols', risco: 'MÉDIO' },
-                    { nome: 'Ambos Marcam', risco: 'MÉDIO' },
-                    { nome: 'Vitória Seca', risco: 'ALTO' }
-                ];
-            }
+        if (!jogos.length) {
+            container.innerHTML = '<div class="loading">Nenhum jogo ao vivo encontrado.</div>';
+            return;
         }
 
-        const mercadosHTML = mercados.map(m => {
-            const classe = m.risco === 'BAIXO' ? 'market-risk-low' : 
-                          m.risco === 'MÉDIO' ? 'market-risk-medium' : 'market-risk-high';
-            const riskClass = m.risco === 'BAIXO' ? 'risk-low' :
-                            m.risco === 'MÉDIO' ? 'risk-medium' : 'risk-high';
-            return `
-                <div class="market-item ${classe}">
-                    <strong>${m.nome}</strong>
-                    <span class="risk-badge ${riskClass}">Risco: ${m.risco}</span>
-                </div>
-            `;
-        }).join('');
+        container.innerHTML = '';
 
-        const textoWhats = encodeURIComponent(`
-🔥 QUANTSPORT PRO - RECOMENDAÇÃO DE APOSTA
+        jogos.slice(0, 8).forEach(jogo => {
+            container.appendChild(criarCardOportunidade(jogo, true));
+        });
 
-⚽ CONFRONTO:
-${tCasa} vs ${tFora}
+    } catch (e) {
+        container.innerHTML = '<div class="loading">Erro ao carregar jogos ao vivo.</div>';
+    }
+}
 
-🏆 COMPETIÇÃO:
-Liga: ${liga}
-País: ${pais}
-Série/Rodada: ${serie}
-📅 Data/Hora: ${dataJogo}
+async function carregarFuturos() {
+
+    const container = document.getElementById('futureContainer');
+
+    container.innerHTML = '<div class="loading">Buscando jogos futuros...</div>';
+
+    try {
+
+        const res = await fetch(ENDPOINT_FUTURE, {
+            headers: {
+                'x-apisports-key': API_KEY
+            }
+        });
+
+        const data = await res.json();
+
+        let jogos = data.response || [];
+
+        // Priorizar campeonatos brasileiros
+        jogos.sort((a,b) => {
+            const paisA = (a.league.country || '').toLowerCase();
+            const paisB = (b.league.country || '').toLowerCase();
+            const ligaA = paisA.includes('brazil') ? -1 : 1;
+            const ligaB = paisB.includes('brazil') ? -1 : 1;
+            return ligaA - ligaB;
+        });
+
+        if (!jogos.length) {
+            container.innerHTML = '<div class="loading">Nenhum jogo futuro encontrado.</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+
+        jogos.slice(0, 12).forEach(jogo => {
+            container.appendChild(criarCardOportunidade(jogo, false));
+        });
+
+    } catch (e) {
+        container.innerHTML = '<div class="loading">Erro ao buscar jogos futuros.</div>';
+    }
+}
+
+function criarCardOportunidade(item, isLive) {
+
+    const fId = item.fixture.id;
+    const tCasa = item.teams.home.name;
+    const tFora = item.teams.away.name;
+    const liga = item.league.name;
+    const pais = item.league.country || 'N/A';
+    const rodada = item.league.round || 'Não informada';
+
+    const dataJogo = new Date(item.fixture.date)
+        .toLocaleString('pt-BR');
+
+    const golsCasa = item.goals.home ?? 0;
+    const golsFora = item.goals.away ?? 0;
+
+    const tempo = item.fixture.status.elapsed ?? 0;
+
+    // DETECTAR SE É CAMPEONATO BRASILEIRO
+    const isBrasil = pais.toLowerCase().includes('brazil');
+    
+    let apostaPrincipal = '';
+    let recomendacaoExplicita = '';
+    let geminiOpinion = '';
+    let flashNoticia = '';
+    let plataformas = '';
+
+    let mercados = [];
+
+    // LÓGICA SEPARADA PARA BR vs INTERNACIONAL
+    if (isBrasil) {
+
+        apostaPrincipal = 'Dupla Chance Casa + Over 1.5 Gols';
+
+        recomendacaoExplicita = `
+✔ Apostar em: ${tCasa} ou empate
+✔ Apostar em: Mais de 1.5 gols
+✔ Mercado mais seguro disponível
+        `;
+
+        geminiOpinion = `
+A IA detectou padrão ofensivo forte e boa proteção estatística
+para linhas conservadoras no futebol brasileiro.
+        `;
+
+        flashNoticia =
+        '📊 Alta movimentação no mercado brasileiro nas últimas horas.';
+
+        // Plataformas brasileiras
+        plataformas = '🇧🇷 Betano • Bet365 • Sportingbet • Blaze • 1xBet';
+
+        mercados = [
+            {
+                nome: 'Dupla Chance Casa',
+                risco: 'BAIXO',
+                classe: 'market-risk-low'
+            },
+            {
+                nome: 'Over 1.5 Gols',
+                risco: 'BAIXO',
+                classe: 'market-risk-low'
+            },
+            {
+                nome: 'Casa marca primeiro',
+                risco: 'MÉDIO',
+                classe: 'market-risk-medium'
+            },
+            {
+                nome: 'Ambos Marcam',
+                risco: 'MÉDIO',
+                classe: 'market-risk-medium'
+            },
+            {
+                nome: 'Over 2.5 Gols',
+                risco: 'MÉDIO',
+                classe: 'market-risk-medium'
+            },
+            {
+                nome: 'Vitória seca',
+                risco: 'ALTO',
+                classe: 'market-risk-high'
+            }
+        ];
+
+    } else {
+
+        apostaPrincipal = 'Over 2.5 Gols';
+
+        recomendacaoExplicita = `
+✔ Apostar em: Mais de 2.5 gols
+✔ Tendência ofensiva detectada
+✔ Mercados de gols em alta
+        `;
+
+        geminiOpinion = `
+O algoritmo detectou padrão ofensivo elevado baseado em média
+recente de gols e pressão ofensiva em competições internacionais.
+        `;
+
+        flashNoticia =
+        '🌍 Mercado internacional indica tendência de gols.';
+
+        // Plataformas internacionais
+        plataformas = '🌍 Bet365 • 1xBet • Parimatch • Pinnacle • Betfair';
+
+        mercados = [
+            {
+                nome: 'Over 1.5 Gols',
+                risco: 'BAIXO',
+                classe: 'market-risk-low'
+            },
+            {
+                nome: 'Over 2.5 Gols',
+                risco: 'MÉDIO',
+                classe: 'market-risk-medium'
+            },
+            {
+                nome: 'Ambos Marcam',
+                risco: 'MÉDIO',
+                classe: 'market-risk-medium'
+            },
+            {
+                nome: 'Placar Exato',
+                risco: 'ALTO',
+                classe: 'market-risk-high'
+            }
+        ];
+    }
+
+    const mercadosHTML = mercados.map(m => `
+        <div class="market-item ${m.classe}">
+            <strong>${m.nome}</strong><br>
+            <small>Risco: ${m.risco}</small>
+        </div>
+    `).join('');
+
+    const textoWhats = encodeURIComponent(`
+🔥 QUANTSPORT PRO v5
+
+🏆 ${liga}
+🌎 ${pais}
+${isBrasil ? '🇧🇷 CAMPEONATO BRASILEIRO' : '🌍 COMPETIÇÃO INTERNACIONAL'}
+📅 ${dataJogo}
+⚽ ${tCasa} vs ${tFora}
 
 ✅ APOSTA RECOMENDADA (CORRETA):
 ${apostaPrincipal}
 
 📊 DETALHES:
-${recomendacaoMercado}
+${recomendacaoExplicita}
 
 🤖 ANÁLISE IA:
 ${geminiOpinion}
 
-📲 COMO APOSTAR:
-1. Abra sua plataforma de apostas
-2. Procure por: ${liga}
-3. Selecione: ${tCasa} vs ${tFora}
-4. Escolha: ${apostaPrincipal}
-5. Confirme e finalize
-
-📍 PLATAFORMAS RECOMENDADAS:
-${isBrazil ? '🇧🇷 Betano, Bet365, Sportingbet, Blaze' : '🌍 Bet365, 1xBet, Parimatch, Pinnacle'}
+📍 PLATAFORMAS PARA APOSTAR:
+${plataformas}
 
 ⚠️ GESTÃO DE RISCO:
 • Nunca aposte mais de 2% do seu saldo
 • Use apenas dinheiro que pode perder
-        `);
+    `);
 
-        const card = document.createElement('div');
-        card.className = 'op-card';
-        card.innerHTML = `
-            <div class="op-header" onclick="toggleGaveta(${fId})">
-                <div class="op-teams">
-                    <strong>${tCasa}</strong> ${isLive ? `${golsCasa} x ${golsFora}` : 'vs'} <strong>${tFora}</strong>
-                    ${badge}
-                    ${isLive ? `<span class="live-timer">⏱️ ${tempo}'</span>` : `<span class="future-timer">📅 ${dataJogo}</span>`}
+    const card = document.createElement('div');
+
+    card.className = 'op-card';
+
+    card.innerHTML = `
+
+        <div class="op-header" onclick="toggleGaveta(${fId})">
+
+            <div class="op-teams">
+                <strong>${tCasa}</strong>
+                ${isLive ? `${golsCasa} x ${golsFora}` : 'vs'}
+                <strong>${tFora}</strong>
+
+                ${isBrasil ? `<span class="brazil-badge">🇧🇷 BRASIL</span>` : ''}
+
+                ${isLive
+                    ? `<span class="live-timer">⏱ ${tempo}'</span>`
+                    : `<span class="future-timer">📅 ${dataJogo}</span>`
+                }
+            </div>
+
+            <span class="badge-confidence conf-alto">
+                IA ALTA
+            </span>
+        </div>
+
+        <div class="op-details" id="details-${fId}">
+
+            <div class="league-info">
+                <strong>🏆 Liga:</strong> ${liga}<br>
+                <strong>🌎 País:</strong> ${pais}<br>
+                <strong>📌 Série/Rodada:</strong> ${rodada}<br>
+                <strong>📅 Data/Hora:</strong> ${dataJogo}
+            </div>
+
+            <div class="bet-highlight">
+                <h3>✅ APOSTA CORRETA PARA FAZER</h3>
+
+                <div class="recommendation-main">
+                    ${apostaPrincipal}
                 </div>
-                <div>
-                    <span class="badge-confidence ${badgeClass}">IA ${confiancaAI}</span>
+
+                <br>
+
+                <div style="white-space: pre-line; line-height:1.8;">
+                    ${recomendacaoExplicita}
                 </div>
             </div>
-            
-            <div class="op-details" id="details-${fId}">
-                <div class="league-info">
-                    <strong>🏆 Liga:</strong> ${liga}<br>
-                    <strong>🌎 País:</strong> ${pais}<br>
-                    <strong>📌 Série/Rodada:</strong> ${serie}<br>
-                    <strong>📅 Data:</strong> ${dataJogo}
-                </div>
 
-                <div class="bet-highlight">
-                    <h3>✅ APOSTA CORRETA PARA FAZER</h3>
-                    <div class="recommendation-main">
-                        🎯 ${apostaPrincipal}
-                    </div>
-                </div>
-                
-                <!-- Box de Parecer Inteligente Gemini -->
-                <div class="gemini-analysis-box">
-                    <p class="gemini-text">"${geminiOpinion}"</p>
-                </div>
-
-                <div class="grid-data">
-                    <div class="data-card">
-                        <h5>Ação Recomendada</h5>
-                        <p style="color:#ffffff">${recomendacaoMercado}</p>
-                    </div>
-                    <div class="data-card">
-                        <h5>Mercados Disponíveis</h5>
-                        <p>${mercados.length} opções</p>
-                    </div>
-                    <div class="data-card">
-                        <h5>Vigilância de Risco</h5>
-                        <p style="color:var(--success)">Controlada</p>
-                    </div>
-                </div>
-
-                <h4 style="margin-top: 15px; margin-bottom: 10px;">📊 TODOS OS MERCADOS DISPONÍVEIS</h4>
-                <div class="market-list">
-                    ${mercadosHTML}
-                </div>
-
-                <div class="news-flash">
-                    <strong>📰 ANÁLISE DE NOTÍCIAS:</strong><br>
-                    ${flashNoticia}
-                </div>
-
-                <button class="whatsapp-btn" onclick="window.open('https://wa.me/?text=${textoWhats}', '_blank')">
-                    📲 Exportar para WhatsApp
-                </button>
+            <div class="gemini-analysis-box">
+                🤖 ${geminiOpinion}
             </div>
-        `;
-        return card;
-    }
 
-    function toggleGaveta(id) {
-        const el = document.getElementById(`details-${id}`);
-        if(el) el.classList.toggle('active');
-    }
+            <h3>
+                📊 TODOS OS MERCADOS DISPONÍVEIS
+            </h3>
 
-    // Inicialização ao ligar
-    window.addEventListener('load', () => {
-        initDarkMode();
-        inicializarVarredura();
-    });
+            <div class="market-list">
+                ${mercadosHTML}
+            </div>
+
+            <div class="platforms-info">
+                <strong>📱 PLATAFORMAS RECOMENDADAS:</strong><br>
+                ${plataformas}
+            </div>
+
+            <div class="news-flash">
+                <strong>📰 Radar Inteligente:</strong>
+                ${flashNoticia}
+            </div>
+
+            <button
+                class="whatsapp-btn"
+                onclick="window.open('https://wa.me/?text=${textoWhats}', '_blank')">
+                📲 Exportar para WhatsApp
+            </button>
+
+        </div>
+    `;
+
+    return card;
+}
+
+function toggleGaveta(id) {
+
+    const el = document.getElementById(`details-${id}`);
+
+    if (el) {
+        el.classList.toggle('active');
+    }
+}
+
+// Inicializar ao carregar
+window.addEventListener('load', () => {
+    initDarkMode();
+    inicializarVarredura();
+});
+
 </script>
+
 </body>
 </html>
